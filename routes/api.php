@@ -38,4 +38,5 @@ Route::get('/versi/{id}', [VersiController::class, 'detail']);
 //====== Autentifikasi ======//
 //localhost/api/auth
 Route::post('/auth', [AuthController::class, 'register']);
+Route::post('/checkauth', [AuthController::class, 'checkauth']);
 //====== End Versi ==========//

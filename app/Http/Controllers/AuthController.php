@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\AuthModel;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
 use Ramsey\Uuid\Uuid;
@@ -75,9 +76,20 @@ class AuthController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function checkauth(Request $request)
     {
-        //
+        $status = false;
+        $checkauth = DB::table('users')->where('email',$request->email)->first();
+        if($checkauth!=null){
+         $status = true;   
+        }
+        $response = [
+            'message' => 'true or not',
+            'data' => $status
+        ];
+
+        return response()->json($response,Response::HTTP_CREATED);
+
     }
 
     /**
