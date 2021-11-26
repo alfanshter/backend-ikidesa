@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AktaKelahiranController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\VersiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -26,10 +27,15 @@ Route::post('/aktakelahiran', [AktaKelahiranController::class, 'store']);
 
 //====== Versi Aplikasi ======//
 //localhost/api/versi
-//Method ::GET
 Route::get('/versi', [VersiController::class, 'index']);
 Route::post('/versi', [VersiController::class, 'insert']);
 Route::post('/versi/{id}', [VersiController::class, 'update']);
 Route::delete('/versi/{id}', [VersiController::class, 'delete']);
 Route::get('/versi/{id}', [VersiController::class, 'detail']);
+//====== End Versi ==========//
+
+
+//====== Autentifikasi ======//
+//localhost/api/auth
+Route::post('/auth', [AuthController::class, 'register']);
 //====== End Versi ==========//
