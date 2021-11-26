@@ -30,6 +30,7 @@ class AuthController extends Controller
     {
         $uid = Uuid::uuid4(Uuid::NAMESPACE_DNS,'php.net');
         $validator = Validator::make($request->all(),[
+            'uid' => ['required'],
             'email' => ['required'],
             'nama' => ['required'],
             'nik' => ['required'],
@@ -47,7 +48,7 @@ class AuthController extends Controller
         try {
 
             $register = new AuthModel();
-            $register->uid = Uuid::uuid4()->getHex();
+            $register->uid = $request->uid;
             $register->email = $request->email;
             $register->nama = $request->nama;
             $register->nik = $request->nik;
@@ -87,28 +88,29 @@ class AuthController extends Controller
             'message' => 'true or not',
             'data' => $status
         ];
-
         return response()->json($response,Response::HTTP_CREATED);
-
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function detailakun(Request $request)
     {
-        //
+
+        $detailakun = DB::table('users')->where('uid',$request->input('uid'))->first();
+        $response = [
+            'message' => 'detail akun',
+            'data' => $detailakun
+        ];
+
+        if($detailakun==null){
+            $response = [
+                'message' => 'detail akun',
+                'data' => 'akun tidak terdaftar'
+            ];
+            return response()->json($response,Response::HTTP_OK);   
+        }
+        return response()->json($response,Response::HTTP_OK);   
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    
     public function edit($id)
     {
         //
