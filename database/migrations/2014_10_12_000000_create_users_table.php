@@ -26,6 +26,24 @@ class CreateUsersTable extends Migration
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
         });
+
+
+        Schema::create('update_auths', function (Blueprint $table) {
+            $table->id();
+            $table->string('uid_user',32)->nullable();
+            $table->string('keterangan');
+            $table->string('fotoktp');
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent();
+        });
+        
+        Schema::table('update_auths', function (Blueprint $table) {
+            $table->foreign('uid_user')->references('uid')->on('users')->onDelete('cascade')->onUpdate('cascade');
+        });
+        
+       
+
+       
     }
 
     /**

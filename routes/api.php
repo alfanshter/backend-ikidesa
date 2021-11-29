@@ -40,4 +40,5 @@ Route::get('/versi/{id}', [VersiController::class, 'detail']);
 Route::post('/auth', [AuthController::class, 'register']);
 Route::post('/checkauth', [AuthController::class, 'checkauth']);
 Route::get('/auth/{uid?}', [AuthController::class, 'detailakun']);
+Route::post('/update', [AuthController::class, 'update']);
 //====== End Versi ==========//

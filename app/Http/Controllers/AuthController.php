@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AuthModel;
+use App\Models\UpdateAuth;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -123,9 +124,54 @@ class AuthController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(),[
+            'fotoktp' => 'required',
+            'keterangan' => ' required'
+
+        ]);
+
+        if($validator->fails()){
+            return response()->json($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+        //menyimpan data
+        $file = $request->file('fotoktp');
+
+        //namafile
+        $namafile = $file->getClientOriginalName();
+        //ekstensifile
+        $ekstensi = $file->getClientOriginalExtension();
+        //realpath
+        $realpath = $file->getRealPath();
+        //ukuran file
+        $ukuranfile = $file->getSize();
+        // tipe mime
+        $file->getMimeType();
+        //tujuan upload
+        $tujuanupload = 'img';
+        //upload file
+        try {
+            $file->move($tujuanupload,$file->getClientOriginalName());
+            $path = $tujuanupload.'/'.$file->getClientOriginalName();
+
+            $register = new UpdateAuth();
+            $register->fotoktp = $path;
+            $register->keterangan = $request->keterangan;
+            $register->uid_user = $request->uid_user;
+            $register->save();
+            $response = [
+                'message' => 'upload sukses',
+                'data' => $register
+            ];
+            return response()->json($response,Response::HTTP_OK);   
+        } catch (QueryException $e) {
+            return response()->json(['message' => "Failed", 'data' => $e->errorInfo],Response::HTTP_UNPROCESSABLE_ENTITY);
+        }
+
+
+
     }
 
     /**
