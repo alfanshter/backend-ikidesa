@@ -42,3 +42,12 @@ Route::post('/checkauth', [AuthController::class, 'checkauth']);
 Route::get('/auth/{uid?}', [AuthController::class, 'detailakun']);
 Route::post('/update', [AuthController::class, 'update']);
 //====== End Versi ==========//
+
+//====== Akta Kelahiran ======//
+//localhost/api/
+Route::post('/kelahiran', [AktaKelahiranController::class, 'create']);
+Route::get('/kelahiran', [AktaKelahiranController::class, 'readall']);
+Route::get('/kelahiran/{uid_user}', [AktaKelahiranController::class, 'readallbyid']);
+Route::get('/detailakta/{id_akta}', [AktaKelahiranController::class, 'readdetail']);
+Route::post('/updateakta', [AktaKelahiranController::class, 'updateakta']);
+//====== End AktaKelahiran ==========//

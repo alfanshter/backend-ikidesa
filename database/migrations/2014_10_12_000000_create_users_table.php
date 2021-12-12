@@ -33,6 +33,7 @@ class CreateUsersTable extends Migration
             $table->string('uid_user',32)->nullable();
             $table->string('keterangan');
             $table->string('fotoktp');
+            $table->enum('status',['belum_dikonfirmasi','sudah_dikonfirmasi','ditolak']);
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
         });
