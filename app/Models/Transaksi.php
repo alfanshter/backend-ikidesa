@@ -11,6 +11,8 @@ class Transaksi extends Model
 
  protected $fillable = [
         'type',
-        'status'
+        'status',
+        'id_target',
+        'id_users'
     ];
 }

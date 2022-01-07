@@ -32,6 +32,8 @@ class CreateAktakelahiransTable extends Migration
             $table->string('uid_user');
             $table->timestamps();
             $table->enum('status_verifikasi', ['belumdiverifikasi', 'sedangproses','selesai']);   
+            $table->foreign('uid_user')->references('uid')->on('users')->onDelete('cascade')->onUpdate('cascade');
+
         });    }
 
     /**

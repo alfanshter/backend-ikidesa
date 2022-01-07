@@ -15,7 +15,13 @@ class CreateTransaksisTable extends Migration
     {
         Schema::create('transaksis', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->string('type');
+            $table->string('status');
+            $table->foreignId('id_target')->unique();
+            $table->string('uid_users');
+            $table->timestamp('created_at')->useCurrent();
+            $table->timestamp('updated_at')->useCurrent();
+            $table->foreign('id_target')->references('id')->on('aktakelahirans')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\AktaKelahiran;
+use App\Models\Aktakelahiran;
 use App\Models\Transaksi;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
@@ -67,6 +67,7 @@ class AktaKelahiranController extends Controller
                 $transaksi->type = 'Surat Keterangan Kelahiran';
                 $transaksi->status = 'Belum diverifikasi';
                 $transaksi->id_target = $aktekelahiran->id;
+                $transaksi->uid_users = $aktekelahiran->uid_user;
                 $transaksi->save();
                 $response = [
                 'message' => 'Akte kelahiran berhasil di input',

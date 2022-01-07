@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AktaKelahiranController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\TransaksiController;
 use App\Http\Controllers\VersiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -51,4 +52,12 @@ Route::get('/kelahiran/{uid_user}', [AktaKelahiranController::class, 'readallbyi
 Route::get('/detailakta/{id_akta}', [AktaKelahiranController::class, 'readdetail']);
 Route::post('/updateakta', [AktaKelahiranController::class, 'updateakta']);
 // //====== End AktaKelahiran ==========//
+
+//====== TRANSAKSI ======//
+    /*ambil semua transaksi sesuai id */
+Route::get('/transaksi/{uid?}', [TransaksiController::class, 'readtransaksi']);
+    /*detail transaksi*/
+Route::get('/detailtransaksi/{id?}', [TransaksiController::class, 'detailtransaksi']);
+//====== END TRANSAKSI ======//
+
 // https://ikidesa.pws-solution.com/public
