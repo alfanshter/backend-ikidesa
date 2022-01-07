@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\VersiModels;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -21,15 +22,22 @@ class VersiController extends Controller
         return response()->json($response,Response::HTTP_OK);
     }
 
-    public function detail($id)
+    public function detail(Request $request)
     {
-        $detailversi = VersiModels::findorFail($id);
+        $detailversi = DB::table('versi_models')->where('nama_aplikasi',$request->input('nama_aplikasi'))->first();
         $response = [
-            'message' => 'Detail versi',
-            'data' =>$detailversi
+            'message' => 'detail versi',
+            'data' => $detailversi
         ];
 
-        return response()->json($response, Response::HTTP_OK);
+        if($detailversi==null){
+            $response = [
+                'message' => 'detail versi',
+                'data' => null
+            ];
+            return response()->json($response,Response::HTTP_OK);   
+        }
+        return response()->json($response,Response::HTTP_OK);
         
     }
 
@@ -49,15 +57,14 @@ class VersiController extends Controller
             $insertversi = VersiModels::create($request->all());
             $response = [
                 'message' => 'berhasil insert',
-                'data' => $insertversi
+                'data' => 1
             ];
 
             return response()->json($response,Response::HTTP_CREATED);
 
         } catch (QueryException $e) {
-            return response()->json([
-                'message' => "Failed" . $e->errorInfo
-            ]);
+            return response()->json(['message' => "Failed", 'data' => $e->errorInfo],Response::HTTP_UNPROCESSABLE_ENTITY);
+
         }
 
     }
@@ -80,15 +87,14 @@ class VersiController extends Controller
             $updateversi->update($request->all());
             $response = [
                 'message' => 'berhasil update',
-                'data' => $updateversi
+                'data' => 1
             ];
 
             return response()->json($response,Response::HTTP_OK);
 
         } catch (QueryException $e) {
-            return response()->json([
-                'message' => "Failed" . $e->errorInfo
-            ]);
+            return response()->json(['message' => "Failed", 'data' => $e->errorInfo],Response::HTTP_UNPROCESSABLE_ENTITY);
+
         }
 
     }

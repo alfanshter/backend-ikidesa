@@ -46,13 +46,13 @@ class AuthController extends Controller
             $register->save();
             $response = [
                 'message' => 'berhasil insert',
-                'data' => $register
+                'data' => 1
             ];
 
             return response()->json($response,Response::HTTP_CREATED);
 
         } catch (QueryException $e) {
-            return response()->json(['message' => "Failed", 'data' => $e->errorInfo],Response::HTTP_UNPROCESSABLE_ENTITY);
+            return response()->json(['message' => "Failed", 'data' => 0 , 'error' => $e->errorInfo],Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
     }

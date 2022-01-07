@@ -31,7 +31,7 @@ Route::get('/versi', [VersiController::class, 'index']);
 Route::post('/versi', [VersiController::class, 'insert']);
 Route::post('/versi/{id}', [VersiController::class, 'update']);
 Route::delete('/versi/{id}', [VersiController::class, 'delete']);
-Route::get('/versi/{id}', [VersiController::class, 'detail']);
+Route::get('/versi', [VersiController::class, 'detail']);
 //====== End Versi ==========//
 
 
@@ -50,4 +50,5 @@ Route::get('/kelahiran', [AktaKelahiranController::class, 'readall']);
 Route::get('/kelahiran/{uid_user}', [AktaKelahiranController::class, 'readallbyid']);
 Route::get('/detailakta/{id_akta}', [AktaKelahiranController::class, 'readdetail']);
 Route::post('/updateakta', [AktaKelahiranController::class, 'updateakta']);
-//====== End AktaKelahiran ==========//
+// //====== End AktaKelahiran ==========//
+// https://ikidesa.pws-solution.com/public

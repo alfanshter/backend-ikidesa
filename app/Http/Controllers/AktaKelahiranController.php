@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AktaKelahiran;
+use App\Models\Transaksi;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -34,19 +35,15 @@ class AktaKelahiranController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json($validator->errors(), Response::HTTP_UNPROCESSABLE_ENTITY);
-        }
+            $response = [
+                'message' => $validator->errors(),
+                'data' => 0,
+            ];
+            return response()->json($response,Response::HTTP_UNPROCESSABLE_ENTITY);
 
-        $filettdsaksi1 = $request->file('ttdsaksi1');
-        $filettdsaksi2 = $request->file('ttdsaksi2');
-        $tujuanupload = 'img';
+        }
         
         try {
-            $filettdsaksi1->move($tujuanupload,$filettdsaksi1->getClientOriginalName());
-            $pathttdsaksi1 = $tujuanupload.'/'.$filettdsaksi1->getClientOriginalName();
-            $filettdsaksi2->move($tujuanupload,$filettdsaksi2->getClientOriginalName());
-            $pathttdsaksi2 = $tujuanupload.'/'.$filettdsaksi2->getClientOriginalName();
-
             $aktekelahiran = new AktaKelahiran();
             $aktekelahiran->ktp_ayah = $request->ktp_ayah;
             $aktekelahiran->ktp_ibu = $request->ktp_ibu;
@@ -57,23 +54,43 @@ class AktaKelahiranController extends Controller
             $aktekelahiran->tempatlahir = $request->tempatlahir;
             $aktekelahiran->agama = $request->agama;
             $aktekelahiran->alamat = $request->alamat;
-            $aktekelahiran->ttdsaksi1 = $pathttdsaksi1;
-            $aktekelahiran->ttdsaksi2 = $pathttdsaksi2;
+            $aktekelahiran->ttdsaksi1 = $request->ttdsaksi1;
+            $aktekelahiran->ttdsaksi2 = $request->ttdsaksi2;
             $aktekelahiran->jam = $request->jam;
             $aktekelahiran->tanggallahir = $request->tanggallahir;
             $aktekelahiran->hari = $request->hari;
             $aktekelahiran->uid_user = $request->uid_user;
             $aktekelahiran->save();
-
-            $response = [
+            
+            try {
+                $transaksi = new Transaksi();
+                $transaksi->type = 'Surat Keterangan Kelahiran';
+                $transaksi->status = 'Belum diverifikasi';
+                $transaksi->id_target = $aktekelahiran->id;
+                $transaksi->save();
+                $response = [
                 'message' => 'Akte kelahiran berhasil di input',
                 'data' => 1
             ];
+                return response()->json($response, Response::HTTP_CREATED);
 
-            return response()->json($response, Response::HTTP_CREATED);
+
+            } catch (QueryException $e2) {
+             $response = [
+                'message' => $e2,
+                'data' => 0,
+            ];
+            return response()->json($response,Response::HTTP_UNPROCESSABLE_ENTITY);
+
+            }
+
 
         } catch (QueryException $e) {
-            return response()->json(['message' => "Failed", 'data' => $e->errorInfo],Response::HTTP_UNPROCESSABLE_ENTITY);
+             $response = [
+                'message' => $e,
+                'data' => 0,
+            ];
+            return response()->json($response,Response::HTTP_UNPROCESSABLE_ENTITY);
 
         }
 
@@ -273,31 +290,7 @@ class AktaKelahiranController extends Controller
                 return response()->json($response,Response::HTTP_OK);
         }
 
-        // File::delete($foto->foto);
-
-        // $updateaktakelahiran = DB::table('aktakelahirans')->where('id',$request->id)->update([
-        //     'ktp_ayah'=> $foto->foto,
-        //     'ktp_ibu' => $request->nama,
-        //     'ktp_saksi1' => $request->harga,
-        //     'ktp_saksi2' => $request->keterangan,
-        //     'nama_anak' => $request->keterangan,
-        //     'anak_ke' => $request->keterangan,
-        //     'tempatlahir' => $request->keterangan,
-        //     'tanggallahir' => $request->keterangan,
-        //     'hari' => $request->keterangan,
-        //     'jam' => $request->keterangan,
-        //     'agama' => $request->keterangan,
-        //     'alamat' => $request->keterangan,
-        //     'ttdsaksi1' => $request->keterangan,
-        //     'ttdsaksi2' => $request->keterangan
-        // ]);
-
-        // $response = [
-        //     'message' => 'berhasil update',
-        //     'data' => 1
-        // ];
-        //     return response()->json($response,Response::HTTP_OK);
-
+       
 
     }
 
